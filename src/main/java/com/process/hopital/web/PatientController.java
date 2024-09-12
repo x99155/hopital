@@ -21,10 +21,16 @@ public class PatientController {
 
     private PatientRepository patientRepository;
 
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/user/index";
+    }
+
+
     /*
     *  Pour stocker les résultats dans le model on fait appel à l'objet model (de type map (key-value))
      */
-    @GetMapping("/index")
+    @GetMapping("/user/index")
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "size", defaultValue = "4") int size,
@@ -43,14 +49,14 @@ public class PatientController {
         return "patients"; // The name of the view template (patients.html)
     }
 
-    @GetMapping("/deletePatient")
+    @GetMapping("/admin/deletePatient")
     public String delete(@RequestParam(name = "id") Long id, String keyword, int page) {
         patientRepository.deleteById(id);
 
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
 
-    @GetMapping("/formPatients")
+    @GetMapping("/admin/formPatients")
     public String formPatients(Model model){
 
         model.addAttribute("patient", new Patient());
@@ -67,7 +73,7 @@ public class PatientController {
     - utiliser l'annotion @Valid, et l'objet BindingResult au niveau du controller
     - utiliser th:errors au niveau de la page html
      */
-    @PostMapping("/save")
+    @PostMapping("/admin/save")
     public String save(Model model, @Valid Patient patient, BindingResult bindingResult) {
         //validation coté serveur
         if(bindingResult.hasErrors()) {
@@ -76,7 +82,7 @@ public class PatientController {
         // save en bdd
         patientRepository.save(patient);
 
-        return "redirect:formPatients";
+        return "redirect:/admin/formPatients";
     }
 
     /*
@@ -96,7 +102,7 @@ public class PatientController {
 
      */
 
-    @GetMapping("/editPatient")
+    @GetMapping("/admin/editPatient")
     public String editPatient(Model model, Long id, String keyword, int page) {
         Patient patient = patientRepository.findById(id).orElse(null);
         if (patient == null) throw new RuntimeException("Patient introuvable");
@@ -112,7 +118,7 @@ public class PatientController {
     grace à @Requestparam on peut définir les valeur par défaut
      */
 
-    @PostMapping("/update")
+    @PostMapping("/admin/update")
     public String update(Model model, @Valid Patient patient, BindingResult bindingResult,
                          @RequestParam(defaultValue = "0") int page,
                          @RequestParam(defaultValue = "") String keyword) {
@@ -123,7 +129,7 @@ public class PatientController {
         // save en bdd
         patientRepository.save(patient);
 
-        return "redirect:/index?page="+page+"&keyword="+keyword;
+        return "redirect:/user/index?page="+page+"&keyword="+keyword;
     }
 
 }
