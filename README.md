@@ -30,7 +30,7 @@ L'application doit permettre les fonctionnalités suivantes :
 ### Sécurisation de l'application avec Spring Security
 
 * Création de la classe SecurityConfig
-  ![security_config](captures/security_config.png)
+![security_config](captures/security_config.png)
 
 La classe SecurityConfig est une classe dans Spring Security qui permet de configurer la sécurité de 
 votre application web. Elle est souvent utilisée pour définir
