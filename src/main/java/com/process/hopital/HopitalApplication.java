@@ -7,58 +7,58 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 
 import java.util.Date;
 
 @AllArgsConstructor
 @SpringBootApplication
-public class HopitalApplication implements CommandLineRunner {
+public class HopitalApplication {
 
 	private PatientRepository patientRepository;
 
-	/*
-	* Voici trois méthodes pour créer un nouveau patient
-	 */
-	@Override
-	public void run(String... args) throws Exception {
-		patientRepository.save(new Patient(null, "Jules", new Date(), true, 300));
-		patientRepository.save(new Patient(null, "Marc", new Date(), false, 330));
-		patientRepository.save(new Patient(null, "Ariette", new Date(), true, 103));
-		patientRepository.save(new Patient(null, "Juana", new Date(), false, 150));
-		patientRepository.save(new Patient(null, "Boris", new Date(), false, 280));
-
-
-		/*
-		// Méthode 1:
-		Patient patient = new Patient();
-		patient.setId(null);
-		patient.setNom("Pierre");
-		patient.setDateDeNaissance(new Date());
-		patient.setMalade(true);
-		patient.setScore(3);
-
-		// Méthode 2:
-		Patient patient2 = new Patient(null, "Thomas", new Date(), false, 23);
-
-		// Méthode 3: En utilisant Builder
-		Patient patient3 = Patient.builder()
-				.id(null)
-				.nom("Marie")
-				.dateDeNaissance(new Date())
-				.malade(false)
-				.score(3)
-				.build();
-
-		patientRepository.save(patient);
-
-		 */
-
-	}
-
 	public static void main(String[] args) {
 		SpringApplication.run(HopitalApplication.class, args);
+	}
+
+	@Bean
+	CommandLineRunner init() {
+        return args -> {
+			// Ajout des patients
+			patientRepository.save(new Patient(null, "Jules", new Date(), true, 300));
+			patientRepository.save(new Patient(null, "Marc", new Date(), false, 330));
+			patientRepository.save(new Patient(null, "Ariette", new Date(), true, 103));
+			patientRepository.save(new Patient(null, "Juana", new Date(), false, 150));
+			patientRepository.save(new Patient(null, "Boris", new Date(), false, 280));
+		};
+    }
+
+	@Bean
+	CommandLineRunner commandLineRunnerJdbc(JdbcUserDetailsManager jdbcUserDetailsManager){
+		PasswordEncoder passwordEncoder = passwordEncoder();
+
+		return args -> {
+			UserDetails u1= jdbcUserDetailsManager.loadUserByUsername("user1");
+			UserDetails u2= jdbcUserDetailsManager.loadUserByUsername("user2");
+			UserDetails u3= jdbcUserDetailsManager.loadUserByUsername("admin");
+
+			if (u1 == null)
+				jdbcUserDetailsManager.createUser(
+						User.withUsername("user1").password(passwordEncoder.encode("1234")).roles("USER").build()
+				);
+			if (u2 == null)
+				jdbcUserDetailsManager.createUser(
+						User.withUsername("user2").password(passwordEncoder.encode("1234")).roles("USER").build()
+				);
+			if (u3 == null)
+				jdbcUserDetailsManager.createUser(
+						User.withUsername("admin").password(passwordEncoder.encode("1234")).roles("USER","ADMIN").build()
+				);
+		};
 	}
 
 

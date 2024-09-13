@@ -9,7 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
+import javax.sql.DataSource;
+
 
 @Configuration
 @EnableWebSecurity
@@ -19,10 +23,27 @@ public class SecurityConfig {
     private final PasswordEncoder passwordEncoder;
 
     /*
+        DataSource: on précise la source de données (ici c'est la bdd configurer dans le fichier properties)
+         dans laquelle on stockera les données
+
+         Avec la stratégie JDBC Authentication, on a besoin de deux tables pour stocker les données de
+         l'utilisateur en bdd: une table qui permet de stocker les utilisateurs, une table pour stocker les roles
+     */
+
+    @Bean
+    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource){
+        return new JdbcUserDetailsManager(dataSource);
+    }
+
+
+
+
+    /*
         J'utilise ici la stratégie InMemoryAuthentification,
 
         les identifiant et les roles des utilisateurs sont stockées en mémoires et pas dans une bdd
      */
+    /*
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
 
@@ -33,6 +54,7 @@ public class SecurityConfig {
                 User.withUsername("admin").password(passwordEncoder.encode("1234")).roles("USER", "ADMIN").build()
         );
     }
+    */
 
     /*
         client(envoie requete) -> SecurityFilterChain(si ok) -> dispatcherServlet -> etc

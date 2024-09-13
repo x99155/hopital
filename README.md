@@ -66,12 +66,12 @@ et de l'autorisation des utilisateurs.
 
 ### JDBC Authentication
 
-![in_memory_auth](captures/jdbc.png)
+![jdbc_auth](captures/jdbc_auth.png)
 
 - `Définition:` Cette stratégie d'authentification utilise une base de données relationnelle (comme MySQL, PostgreSQL, etc.) pour stocker et récupérer les informations d'identification des utilisateurs
 
 
-- `Différence:` Les détails des utilisateurs sont stockés dans une base de données externe. Cela offre une solution plus évolutive pour la gestion des utilisateurs, particulièrement dans des environnements de production
+- `Différence:` Les détails des utilisateurs sont stockés dans une base de données. Cela offre une solution plus évolutive pour la gestion des utilisateurs, particulièrement dans des environnements de production
 
 Dans la base de données
 ![jdbc_db](captures/jdbc_db.png)
