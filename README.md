@@ -5,7 +5,7 @@ Développement d'une application Web JEE basée sur Spring MVC,
 Thylemeaf, Spring Data JPA et Spring Security qui permet de 
 gérer les patients. 
 
-L'application doit permettre les fonctionnalités suivantes :
+L'application doit avoir les fonctionnalitées suivantes :
 * Ajouter un patient
 * Modifier un patient
 * Supprimer un patient
@@ -36,6 +36,9 @@ La classe SecurityConfig est une classe dans Spring Security qui permet de confi
 votre application web. Elle est souvent utilisée pour définir
 des règles de sécurité, comme la gestion de l'authentification
 et de l'autorisation des utilisateurs.
+
+Dans un projet avec Spring Security, c'est le point d'entrée des requetes. Comme
+c'est illustré dans la deuxième captures ci-dessus.
 
 * `@Configuration` indique que cette classe est une classe de configuration Spring.
 * `@EnableWebSecurity` active les fonctionnalités de sécurité web fournies par Spring Security.
