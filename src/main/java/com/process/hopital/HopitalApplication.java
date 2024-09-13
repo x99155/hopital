@@ -2,6 +2,7 @@ package com.process.hopital;
 
 import com.process.hopital.entities.Patient;
 import com.process.hopital.repository.PatientRepository;
+import com.process.hopital.security.service.AccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,13 +20,16 @@ import java.util.Date;
 @SpringBootApplication
 public class HopitalApplication {
 
+	// NB: Quand on met en commentaire l'annotation @Bean, la méthode est ignoré au demarrage,
+	// c'est equivalent à mettre la totalité de la méthode en commentaire
+
 	private PatientRepository patientRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(HopitalApplication.class, args);
 	}
 
-	@Bean
+	//@Bean
 	CommandLineRunner init() {
         return args -> {
 			// Ajout des patients
@@ -37,7 +41,7 @@ public class HopitalApplication {
 		};
     }
 
-	@Bean
+	//@Bean
 	CommandLineRunner commandLineRunnerJdbc(JdbcUserDetailsManager jdbcUserDetailsManager){
 		PasswordEncoder passwordEncoder = passwordEncoder();
 
@@ -58,6 +62,26 @@ public class HopitalApplication {
 				jdbcUserDetailsManager.createUser(
 						User.withUsername("admin").password(passwordEncoder.encode("1234")).roles("USER","ADMIN").build()
 				);
+		};
+	}
+
+	//@Bean
+	CommandLineRunner commandLineRunnerUserdDetailsService(AccountService accountService) {
+		return args -> {
+			// Création des roles
+			accountService.addNewRole("USER");
+			accountService.addNewRole("ADMIN");
+
+			// Création des utilisateurs
+			accountService.addNewUser("user1", "1234", "1234", "user1@test.com");
+			accountService.addNewUser("user2", "1234", "1234", "user2@test.com");
+			accountService.addNewUser("admin", "1234", "1234", "admin@test.com");
+
+			// Affecter les roles aux utilisateurs
+			accountService.addRoleToUsername("user1", "USER");
+			accountService.addRoleToUsername("user2", "USER");
+			accountService.addRoleToUsername("admin", "USER");
+			accountService.addRoleToUsername("admin", "ADMIN");
 		};
 	}
 

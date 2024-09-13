@@ -1,5 +1,6 @@
 package com.process.hopital.security;
 
+import com.process.hopital.security.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +22,12 @@ import javax.sql.DataSource;
 public class SecurityConfig {
 
     private final PasswordEncoder passwordEncoder;
+    private final UserDetailsServiceImpl userDetailsServiceImpl;
+
 
     /*
+        STRATEGY: JDBC Authentication
+
         DataSource: on précise la source de données (ici c'est la bdd configurer dans le fichier properties)
          dans laquelle on stockera les données
 
@@ -39,12 +44,12 @@ public class SecurityConfig {
 
 
     /*
-        J'utilise ici la stratégie InMemoryAuthentification,
+        STRATEGY: InMemoryAuthentification,
 
         les identifiant et les roles des utilisateurs sont stockées en mémoires et pas dans une bdd
      */
-    /*
-    @Bean
+
+    //@Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager(){
 
         return new InMemoryUserDetailsManager(
@@ -54,11 +59,8 @@ public class SecurityConfig {
                 User.withUsername("admin").password(passwordEncoder.encode("1234")).roles("USER", "ADMIN").build()
         );
     }
-    */
 
-    /*
-        client(envoie requete) -> SecurityFilterChain(si ok) -> dispatcherServlet -> etc
-     */
+
 
     /*
     @Bean
@@ -96,6 +98,7 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception
                         .accessDeniedPage("/notAuthorized") // Page d'accès refusé
                 )
+                .userDetailsService(userDetailsServiceImpl) // STRATEGY UserDetailsService
                 .build();
     }
 

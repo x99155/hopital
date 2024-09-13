@@ -66,7 +66,7 @@ et de l'autorisation des utilisateurs.
 
 ### JDBC Authentication
 
-![jdbc_auth](captures/jdbc_auth.png)
+![jdbc_auth](captures/jdbc_auth.PNG)
 
 - `Définition:` Cette stratégie d'authentification utilise une base de données relationnelle (comme MySQL, PostgreSQL, etc.) pour stocker et récupérer les informations d'identification des utilisateurs
 
@@ -81,15 +81,35 @@ Dans la base de données
 
 ### UserDetails Authentication
 
-![in_memory_auth](captures/user_detail.png)
-
 - `Définition:` Cette interface permet de récupérer les détails de l'utilisateur à partir de n'importe quelle source de données personnalisée, par exemple, une base de données NoSQL, un service web, etc.
 
+- `Développement:` Dans cette stratégie, c'est au développeur de créer les tables, définir les repository, le service. Après cela il devra juste crée un service qui implémente userdetailsservice 
 
 - `Différence:` Plutôt que de déclarer une stratégie d'authentification spécifique, cette approche permet de connecter un service personnalisé (UserDetailServiceImpl dans ce cas) qui implémente l'interface UserDetailsService. Cela offre une grande flexibilité pour récupérer les détails des utilisateurs à partir de diverses sources
 
+1. Créer les entitées
+   ![user_detail_auth](captures/user_entity.PNG)
+   ![user_detail_auth](captures/role_entity.PNG)
+
+2. Créer les repositories
+   ![user_detail_auth](captures/user_repo.PNG)
+   ![user_detail_auth](captures/role_repo.PNG)
+
+3. Créer le service
+   ![user_detail_auth](captures/service_interface.PNG)
+   ![user_detail_auth](captures/service_impl.PNG)
+
+4. Crée un service qui Implémente UserDetailsService
+   ![user_detail_auth](captures/user_details_service_impl.PNG)
+
+5. Appeller la méthode userservicedetails dans le filterchain
+   ![user_detail_auth](captures/filter_chain.PNG)
+
+6. Ajouter des données factice pour le test
+   ![user_detail_auth](captures/fake_data.PNG)
+
 Dans la base de données
-![userdetail_db](captures/userDetail_db.png)
+![user_detail_auth](captures/userDetail_db.png)
 
 
 
@@ -115,6 +135,12 @@ Edit Page
 
 Delete Page
 ![Delete_page](captures/delete.PNG)
+
+
+
+### Conclusion
+Ce projet nous permis d'apprendre à utiliser Spring MVC, de mettre en
+place Spring Security
 
 
 
