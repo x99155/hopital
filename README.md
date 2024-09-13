@@ -93,8 +93,28 @@ Dans la base de données
 
 
 
+### Résultat
 
+User Dashboard
+![user_dashboard](captures/user_dashboard.PNG)
 
+Admin Dashboard
+![in_memory_auth](captures/admin_dashboard.PNG)
+
+Search
+![Search](captures/search.PNG)
+
+Custom Login Page
+![Custom_login](captures/custom_login_page.PNG)
+
+Add Page
+![Add_page](captures/add.PNG)
+
+Edit Page
+![Edit_page](captures/edit.PNG)
+
+Delete Page
+![Delete_page](captures/delete.PNG)
 
 
 
